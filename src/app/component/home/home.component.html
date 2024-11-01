@@ -1,0 +1,62 @@
+<div class="container-fluid">
+    <h1 class="title">Cảm biến</h1>
+    <div class="row">
+        <div class="col col-md-9">
+            <h2 class="menu-title">Thông số hiện tại</h2>
+            <div class="row">
+                <div class="col-6">
+                    <div class="d-flex justify-content-between">
+                        <div class="data-label">  
+                            <div class="data-title">Nhiệt độ</div>
+                            <div class="data">{{sensorData.temperature}} ℃</div>
+                        </div>                   
+                        <i class="bi bi-thermometer-half icon-medium"></i>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex justify-content-between data-humidity">
+                        <div class="data-label">
+                            <div class="data-title">Độ ẩm</div>
+                            <div class="data">{{sensorData.humidity}} %</div>
+                        </div>
+                        <i class="bi bi-moisture icon-medium"></i>                     
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="d-flex justify-content-between data-humidity">
+                        <div class="data-label">
+                            <div class="data-title">Tốc độ quạt</div>
+                            <div class="data">{{sensorData.fanSpeed}} rpm</div>
+                        </div>
+                        <i class="bi bi-fan icon-medium"></i>                   
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="d-flex justify-content-between data-humidity">
+                        <div class="data-label">
+                            <div class="data-title">Đèn</div>
+                            <div class="data">{{sensorData.ledState}}</div>
+                        </div>
+                        <i class="bi bi-lightbulb icon-medium"></i>                    
+                    </div>
+                </div>
+            </div>
+        </div>
+       <div class="col col-md-3">
+            <h2 class="menu-title">Bảng điều khiển</h2>
+            <div class="target-temp">
+                <div>Nhập nhiệt độ mong muốn</div>
+                <input type="number" value="{{sensorData.targetTemperature}}">
+            </div>
+            <div class="target-humidity">
+                <div>Nhập độ ẩm mong muốn</div>
+                <input type="number" value="{{sensorData.targetHumidity}}">
+            </div>
+            <div class="mediumTemp"></div>
+            <div class="mediumHumi"></div>
+       </div>
+        
+    </div>
+</div>
