@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService, User, Station } from '../user.service';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Subscription } from 'rxjs';
-
+import { Router } from '@angular/router';
 @Component({
     selector: 'app-admin',
     templateUrl: './admin.component.html',
@@ -16,7 +16,10 @@ export class AdminComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = []; // Store subscriptions
     errorMessage: string | undefined;
 
-    constructor(private userService: UserService) {}
+    constructor(
+        private userService: UserService,
+        private router:Router
+    ) {}
 
     ngOnInit(): void {
         // Fetch all users
@@ -75,5 +78,8 @@ export class AdminComponent implements OnInit, OnDestroy {
         // Unsubscribe and close all WebSocket connections when the component is destroyed
         this.subscriptions.forEach(sub => sub.unsubscribe());
         Object.values(this.sockets).forEach(socket => socket.complete());
+    }
+    navigateTo(path:string){
+        this.router.navigate([path])
     }
 }

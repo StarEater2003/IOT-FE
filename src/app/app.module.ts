@@ -12,6 +12,8 @@ import { AdminComponent } from './admin/admin.component';
 import { StaffComponent } from './staff/staff.component';
 import { MangageStationComponent } from './mangage-station/mangage-station.component';
 import { MangageStaffComponent } from './mangage-staff/mangage-staff.component';
+import { AddUserComponent } from './mangage-staff/modal/add-user/add-user.component';
+import { AsignStationComponent } from './mangage-staff/modal/asign-station/asign-station.component';
 
 
 @NgModule({
@@ -22,6 +24,8 @@ import { MangageStaffComponent } from './mangage-staff/mangage-staff.component';
         StaffComponent,
         MangageStationComponent,
         MangageStaffComponent,
+        AddUserComponent,
+        AsignStationComponent,
 
     ],
     imports: [

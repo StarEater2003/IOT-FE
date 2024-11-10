@@ -1,25 +1,35 @@
-<div class="admin-container">
-    <h1>Admin Dashboard</h1>
+<div class="container-fluid">
+    <h1 class="title">Admin Dashboard</h1>
 
     <!-- Display error message if it exists -->
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-
+    <div class="d-flex justify-content-center mb-2">
+        <div class="btn btn-success mr-2" (click)="navigateTo('mangagestaff')">Quản lí User</div>
+        <div class="btn btn-success" (click)="navigateTo('station')"> Quản lí Trạm</div>
+    </div>
     <!-- Users and Their Stations Section -->
-    <h2>Users and Their Assigned Stations</h2>
-    <table *ngIf="users.length > 0" class="user-table">
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>Assigned Station ID</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of users">
-                <td>{{ user.username }}</td>
-                <td>{{ user.assignedStationId }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <h2 class="user-title">Danh sách User được phân trạm</h2>
+     <div class="d-flex justify-content-center">
+        
+        <div class="d-flex user-table">        
+            <table *ngIf="users.length > 0" class="table h-100 table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Assigned Station ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of users">
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.assignedStationId }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+     </div>
+    
+   
     <div *ngIf="users.length === 0">No staff users found.</div>
 
     <!-- Sensor Data from Stations Section -->
