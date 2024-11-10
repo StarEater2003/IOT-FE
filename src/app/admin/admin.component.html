@@ -1,58 +1,199 @@
 <div class="admin-container">
     <h1>Admin Dashboard</h1>
 
-    <!-- Display error message if it exists -->
+    <!-- Error message if any -->
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
-    <!-- Users and Their Stations Section -->
-    <h2>Users and Their Assigned Stations</h2>
-    <table *ngIf="users.length > 0" class="user-table">
-        <thead>
-            <tr>
-                <th>Username</th>
-                <th>Assigned Station ID</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of users">
-                <td>{{ user.username }}</td>
-                <td>{{ user.assignedStationId }}</td>
-            </tr>
-        </tbody>
-    </table>
-    <div *ngIf="users.length === 0">No staff users found.</div>
+    <!-- Navigation Buttons to select between User Management and Station Management -->
+    <div class="admin-nav">
 
-    <!-- Sensor Data from Stations Section -->
-    <h2>Sensor Data from Stations</h2>
-    <table *ngIf="stations.length > 0" class="station-table">
-        <thead>
-            <tr>
-                <th>Station ID</th>
-                <th>Temperature</th>
-                <th>Humidity</th>
-                <th>Fan Speed</th>
-                <th>LED State</th>
-                <th>Buzzer State</th>
-                <th>Target Temperature</th>
-                <th>Target Humidity</th>
-                <th>Medium Temperature</th>
-                <th>Medium Humidity</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let station of stations">
-                <td>{{ station.id }}</td>
-                <td>{{ sensorData[station.id]?.temperature }}</td>
-                <td>{{ sensorData[station.id]?.humidity }}</td>
-                <td>{{ sensorData[station.id]?.fanSpeed }}</td>
-                <td>{{ sensorData[station.id]?.ledState }}</td>
-                <td>{{ sensorData[station.id]?.buzzerState }}</td>
-                <td>{{ sensorData[station.id]?.targetTemperature }}</td>
-                <td>{{ sensorData[station.id]?.targetHumidity }}</td>
-                <td>{{ sensorData[station.id]?.mediumTemperature }}</td>
-                <td>{{ sensorData[station.id]?.mediumHumidity }}</td>
-            </tr>
-        </tbody>
-    </table>
-    <div *ngIf="stations.length === 0">No stations found.</div>
+        <button (click)="showUsersSection()">Quản lý Người Dùng</button>
+        <button (click)="showStationsSection()">Quản lý Trạm</button>
+    </div>
+
+    <!-- Quản lý Người Dùng Section -->
+    <div *ngIf="showUsers">
+        <br/>
+        <br/>
+        <button *ngIf="!isAddUserFormVisible" (click)="openAddUserForm()">Add User</button>
+
+        <!-- Delete User Button -->
+        <button *ngIf="!isDeleteUserFormVisible" (click)="openDeleteUserForm()">Delete User</button>
+
+        <!-- Add User Form -->
+        <div *ngIf="isAddUserFormVisible" class="add-user-form">
+            <h3>Add New User</h3>
+            <form (ngSubmit)="submitAddUserForm()">
+                <label for="username">Username:</label>
+                <input type="text" id="username" [(ngModel)]="addUserData.username" name="username">
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" [(ngModel)]="addUserData.password" name="password">
+
+                <label for="level">Level:</label>
+                <select id="level" [(ngModel)]="addUserData.level" name="level">
+                    <option value="1">Level 1</option>
+                    <option value="2">Level 2</option>
+                </select>
+
+                <label for="assignedStationId">Assigned Station ID:</label>
+                <input type="number" id="assignedStationId" [(ngModel)]="addUserData.assignedStationId"
+                    name="assignedStationId">
+
+                <button type="submit">Confirm</button>
+                <button type="button" (click)="closeAddUserForm()">Cancel</button>
+            </form>
+        </div>
+
+        <!-- Delete User Form -->
+        <div *ngIf="isDeleteUserFormVisible" class="delete-user-form">
+            <h3>Delete User</h3>
+            <form (ngSubmit)="submitDeleteUserForm()">
+                <label for="userId">User ID:</label>
+                <input type="number" id="userId" [(ngModel)]="deleteUserId" name="userId" required>
+
+                <button type="submit">Delete</button>
+                <button type="button" (click)="closeDeleteUserForm()">Cancel</button>
+            </form>
+        </div>
+        <h2>Users and Their Assigned Stations</h2>
+        <table *ngIf="users.length > 0" class="user-table">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Assigned Station ID</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users">
+                    <td>{{user.id}}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.assignedStationId }}</td>
+                    <td><button (click)="openUpdateUserForm(user)">Update</button></td> 
+                </tr>
+            </tbody>
+        </table>
+        <div *ngIf="users.length === 0">No staff users found.</div>
+    </div>
+    <div *ngIf="isUpdateUserFormVisible" class="update-user-form">
+        <h3>Update User</h3>
+        <form (ngSubmit)="submitUpdateUserForm()">
+          <label for="username">Username:</label>
+          <input type="text" id="username" [(ngModel)]="updateUserData.username" name="username">
+    
+          <label for="password">Password:</label>
+          <input type="password" id="password" [(ngModel)]="updateUserData.password" name="password">
+    
+          <label for="level">Level:</label>
+          <select id="level" [(ngModel)]="updateUserData.level" name="level">
+            <option value="1">Level 1</option>
+            <option value="2">Level 2</option>
+          </select>
+    
+          <label for="assignedStationId">Assigned Station ID:</label>
+          <input type="number" id="assignedStationId" [(ngModel)]="updateUserData.assignedStationId" name="assignedStationId">
+    
+          <button type="submit">Update</button>
+          <button type="button" (click)="closeUpdateUserForm()">Cancel</button>
+        </form>
+      </div>
+    <br />
+    <br />
+    <!-- Quản lý Trạm Section -->
+
+
+    <div *ngIf="showStations">
+        <button *ngIf="!isAddStationFormVisible" (click)="openAddStationForm()">Thêm trạm</button>
+        <button *ngIf="!isDeleteStationFormVisible" (click)="openDeleteStationForm()">Xóa trạm</button>
+        <div *ngIf="isAddStationFormVisible" class="add-station-form">
+            <h3>Thêm trạm</h3>
+            <form (ngSubmit)="submitAddStationForm()">
+                <label for="name">Name:</label>
+                <input type="text" id="name" [(ngModel)]="addStationData.name" name="name" required>
+
+                <label for="location">Location:</label>
+                <input type="text" id="location" [(ngModel)]="addStationData.location" name="location" required>
+
+                <label for="uri">URI:</label>
+                <input type="text" id="uri" [(ngModel)]="addStationData.uri" name="uri">
+
+                <label for="port">Port:</label>
+                <input type="number" id="port" [(ngModel)]="addStationData.port" name="port" required>
+
+                <button type="submit">Confirm</button>
+                <button type="button" (click)="closeAddStationForm()">Cancel</button>
+            </form>
+        </div>
+        <div *ngIf="isDeleteStationFormVisible" class="delete-station-form">
+            <h3>Xóa trạm</h3>
+            <form (ngSubmit)="submitDeleteStationForm()">
+                <label for="id">ID trạm:</label>
+                <input type="number" id="id" [(ngModel)]="deleteStationId" name="id" required>
+
+                <button type="submit">Xóa</button>
+                <button type="button" (click)="closeDeleteStationForm()">Cancel</button>
+            </form>
+        </div>
+        <h2>Sensor Data from Stations</h2>
+        <table *ngIf="stations.length > 0" class="station-table">
+            <thead>
+                <tr>
+                    <th>Station ID</th>
+                    <th>Temperature</th>
+                    <th>Humidity</th>
+                    <th>Fan Speed</th>
+                    <th>LED State</th>
+                    <th>Buzzer State</th>
+                    <th>Target Temperature</th>
+                    <th>Target Humidity</th>
+                    <th>Medium Temperature</th>
+                    <th>Medium Humidity</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let station of stations">
+                    <td>{{ station.id }}</td>
+                    <td>{{ sensorData[station.id]?.temperature }}</td>
+                    <td>{{ sensorData[station.id]?.humidity }}</td>
+                    <td>{{ sensorData[station.id]?.fanSpeed }}</td>
+                    <td>{{ sensorData[station.id]?.ledState }}</td>
+                    <td>{{ sensorData[station.id]?.buzzerState }}</td>
+                    <td>{{ sensorData[station.id]?.targetTemperature }}</td>
+                    <td>{{ sensorData[station.id]?.targetHumidity }}</td>
+                    <td>{{ sensorData[station.id]?.mediumTemperature }}</td>
+                    <td>{{ sensorData[station.id]?.mediumHumidity }}</td>
+                    <td><button (click)="openStationEditForm(station)">Edit Station</button></td>
+                    <td><button (click)="viewStationLogs(station)">View Logs</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <div *ngIf="stations.length === 0">No stations found.</div>
+
+        <!-- Logs Section -->
+        <div *ngIf="currentStationId">
+            <h3>Logs for Station {{ currentStationId }} (Max Temp: {{ maxTemperature }}, Max Humidity: {{ maxHumidity
+                }})</h3>
+            <ul>
+                <li *ngFor="let log of currentLogs">
+                    {{ log | json }} <!-- You can format this as needed -->
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Form to Edit Station -->
+    <div *ngIf="isEditFormVisible" class="edit-form">
+        <h3>Edit Station</h3>
+        <form (ngSubmit)="submitStationEditForm()">
+            <label for="uri">URI</label>
+            <input type="text" id="uri" [(ngModel)]="editFormData.uri" name="uri">
+            <label for="port">Port</label>
+            <input type="number" id="port" [(ngModel)]="editFormData.port" name="port">
+            <button type="submit">Confirm</button>
+            <button type="button" (click)="closeEditForm()">Cancel</button>
+        </form>
+    </div>
 </div>

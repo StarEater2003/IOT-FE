@@ -1,0 +1,11 @@
+<h2>Station Logs for Station ID: {{ stationId }}</h2>
+
+<div *ngIf="stationLogs.length > 0">
+  <ul>
+    <li *ngFor="let log of stationLogs">{{ log | json }}</li>
+  </ul>
+</div>
+
+<div *ngIf="stationLogs.length === 0">
+  No logs available for this station.
+</div>

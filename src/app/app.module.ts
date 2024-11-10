@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
 import { StaffComponent } from './staff/staff.component';
+import { StationLogsComponent } from './station-logs/station-logs.component';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { StaffComponent } from './staff/staff.component';
         LoginComponent,
         AdminComponent,
         StaffComponent,
+        StationLogsComponent,
 
     ],
     imports: [

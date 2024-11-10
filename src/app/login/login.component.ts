@@ -29,6 +29,7 @@ export class LoginComponent {
             (response: { role: number; assignedStationId: number; message: string }) => {
                 // Thêm `username` từ biến `user` vì nó không có trong response từ API
                 this.userService.currentUser = {
+                    id: response.assignedStationId,
                     username: user.username,   // Gán thủ công username từ tham số user
                     password: user.password,
                     assignedStationId: response.assignedStationId,
