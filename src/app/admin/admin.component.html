@@ -1,16 +1,58 @@
-<h2 class="d-flex justify-content-center  title">Chào mừng đến với trang quản trị</h2>
-<div class="row d-flex justify-content-center">
-    <div class="wrapper">
-        <div class="col-12 d-flex justify-content-center menu-selection">
-            <div class="btn btn-success" (click)="nagvigateTo(['mangagestaff'])"> 
-                Quản lí người dùng
-            </div>
-        </div>
-        <div class="col-12 d-flex justify-content-center  menu-selection">
-            <div class="btn btn-success" (click)="nagvigateTo(['station'])">
-                Quản lí trạm
-            </div>
-        </div>
-    </div>
-    
+<div class="admin-container">
+    <h1>Admin Dashboard</h1>
+
+    <!-- Display error message if it exists -->
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+    <!-- Users and Their Stations Section -->
+    <h2>Users and Their Assigned Stations</h2>
+    <table *ngIf="users.length > 0" class="user-table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Assigned Station ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of users">
+                <td>{{ user.username }}</td>
+                <td>{{ user.assignedStationId }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="users.length === 0">No staff users found.</div>
+
+    <!-- Sensor Data from Stations Section -->
+    <h2>Sensor Data from Stations</h2>
+    <table *ngIf="stations.length > 0" class="station-table">
+        <thead>
+            <tr>
+                <th>Station ID</th>
+                <th>Temperature</th>
+                <th>Humidity</th>
+                <th>Fan Speed</th>
+                <th>LED State</th>
+                <th>Buzzer State</th>
+                <th>Target Temperature</th>
+                <th>Target Humidity</th>
+                <th>Medium Temperature</th>
+                <th>Medium Humidity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let station of stations">
+                <td>{{ station.id }}</td>
+                <td>{{ sensorData[station.id]?.temperature }}</td>
+                <td>{{ sensorData[station.id]?.humidity }}</td>
+                <td>{{ sensorData[station.id]?.fanSpeed }}</td>
+                <td>{{ sensorData[station.id]?.ledState }}</td>
+                <td>{{ sensorData[station.id]?.buzzerState }}</td>
+                <td>{{ sensorData[station.id]?.targetTemperature }}</td>
+                <td>{{ sensorData[station.id]?.targetHumidity }}</td>
+                <td>{{ sensorData[station.id]?.mediumTemperature }}</td>
+                <td>{{ sensorData[station.id]?.mediumHumidity }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="stations.length === 0">No stations found.</div>
 </div>
