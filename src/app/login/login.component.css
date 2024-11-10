@@ -1,3 +1,65 @@
 .head-title{
     margin-bottom: 40px;
 }
+
+/* Centered title */
+h2 {
+
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+/* Form container */
+.login-form {
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    width: 320px;
+}
+
+/* Input fields styling */
+.login-form label {
+    color: #ffffff;
+    font-weight: bold;
+    margin-right: 10px;
+    width: 100px;
+    text-align: right;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+/* Submit button */
+.login-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Error message */
+.error {
+    color: #ff4d4d; /* Red color for error message */
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: center;
+}
