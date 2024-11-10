@@ -24,6 +24,7 @@ export class UserService {
     private apiUrl = 'http://localhost:8080/api/users'; // API base URL
     private apiUrlLogin = 'http://localhost:8080/api/users/login'; // Login API URL
     private apiUrlStations = 'http://localhost:8080/api/stations'; // Stations API URL
+    private apiUrlAddUser = ''
 
     currentUser: User | null = null; // To store the currently logged-in user
 
@@ -54,8 +55,20 @@ export class UserService {
             })
         );
     }
-    
+    createUser(user: User): Observable<User> {
+        return this.http.post<User>(this.apiUrl, user);
+    }
 
+    assignStationToUser(userId: number, stationId: number): Observable<void> {
+        // Tạo URL cho endpoint PUT
+        const url = `${this.apiUrl}/${userId}/assign-user-station`;      
+        return this.http.put<void>(url, stationId).pipe(
+            tap(() => {
+                // Xử lý sau khi gán station cho user nếu cần
+                console.log(`Assigned station ${stationId} to user with id ${userId}`);
+            })
+        );
+    }
     // Method to get the current user
     getCurrentUser(): User | null {
         return this.currentUser; // Return the stored current user
