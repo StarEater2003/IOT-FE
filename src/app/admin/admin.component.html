@@ -1,9 +1,16 @@
-<h2 class="d-flex justify-content-center  title">Chào mừng đến với trang admin</h2>
-<div class="d-flex justify-content-center">
-    <div class="btn btn-success" > 
-        <p>Quản lí người dùng</p>
+<h2 class="d-flex justify-content-center  title">Chào mừng đến với trang quản trị</h2>
+<div class="row d-flex justify-content-center">
+    <div class="wrapper">
+        <div class="col-12 d-flex justify-content-center menu-selection">
+            <div class="btn btn-success" (click)="nagvigateTo(['mangagestaff'])"> 
+                Quản lí người dùng
+            </div>
+        </div>
+        <div class="col-12 d-flex justify-content-center  menu-selection">
+            <div class="btn btn-success" (click)="nagvigateTo(['station'])">
+                Quản lí trạm
+            </div>
+        </div>
     </div>
-    <div class="btn btn-success">
-        <p>Quản lí trạm</p>
-    </div>
+    
 </div>

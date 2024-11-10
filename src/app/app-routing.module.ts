@@ -9,7 +9,6 @@ import { MangageStaffComponent } from './mangage-staff/mangage-staff.component';
 
 const routes: Routes = [
     { path: '', component: LoginComponent },  // Default route
-   
     { path: 'admin', component: AdminComponent },
     { path: 'staff', component: StaffComponent },
     {path:'station',component:MangageStationComponent},

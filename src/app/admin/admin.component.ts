@@ -11,6 +11,6 @@ export class AdminComponent {
     constructor(private router:Router) 
     {}
     nagvigateTo(path:any){
-        this.router.navigate(([path]));
+        this.router.navigate(path);
     }
 }
