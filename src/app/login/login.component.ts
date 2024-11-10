@@ -23,6 +23,7 @@ export class LoginComponent {
       const user: User = { username: this.username, password: this.password };
       this.userService.login(user).subscribe(
           response => {
+            console.log(response)
               // Assuming the backend returns an object containing the role
               const userRole = response.role;
               if (userRole === 1) {
