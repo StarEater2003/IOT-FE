@@ -5,11 +5,14 @@ import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
 import { AppRoutingModule } from './app-routing.module'; // Import AppRoutingModule
 
+
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
 import { StaffComponent } from './staff/staff.component';
+
 import { StationLogsComponent } from './station-logs/station-logs.component';
+
 
 
 @NgModule({
@@ -19,7 +22,6 @@ import { StationLogsComponent } from './station-logs/station-logs.component';
         AdminComponent,
         StaffComponent,
         StationLogsComponent,
-
     ],
     imports: [
         BrowserModule,

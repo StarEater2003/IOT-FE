@@ -1,0 +1,65 @@
+<div class="container-fluid">
+    <div class="row head-title">
+        <div class="d-flex justify-content-center col col-md-12">
+            <h1>Quản lí người dùng</h1>
+        </div>
+        <div class="d-flex justify-content-center col col-md-12 menu-bar">
+            <div class="btn btn-success">Thêm người dùng</div>
+        </div>
+    </div>
+
+    <div class="table-responsive-xl user-data">
+        <table class="table h-100 table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        <span>STT</span>
+                    </th>
+                    <th>
+                        <span>UserName</span>
+                    </th>
+                    <th> 
+                        <span>Password</span>
+                    </th>       
+                    <th>
+                        <span>Account Level</span>
+                    </th>
+                    <th>
+                        <span>Trạm được phân</span>
+                    </th>
+                    <th class="w-25">
+                        <span>Action</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    *ngFor="let staff of staffs | paginate: { itemsPerPage: 5, currentPage: page }; let i = index">
+                    <td>
+                        <p>{{ (page - 1) * 5 + i + 1 }}</p>
+                    </td>
+                    <td>
+                        {{ staff.username }}
+                    </td>
+                    <td>
+                        {{ staff.password}}
+                    </td>
+                    <td>
+                        {{ staff.level}}
+                    </td>
+                    <td>
+                        {{ staff.assignedStationId}}
+                    </td>
+                    
+                    <td class="d-flex action-menu">
+                        <div class="btn btn-info mr-1">Phân trạm</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-end">
+            <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        </div>
+
+    </div>
+</div>

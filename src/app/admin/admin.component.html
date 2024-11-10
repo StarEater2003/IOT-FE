@@ -1,11 +1,13 @@
-<div class="admin-container">
-    <h1>Admin Dashboard</h1>
+<div class="container-fluid">
+    <h1 class="title">Admin Dashboard</h1>
 
     <!-- Error message if any -->
     <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
+
     <!-- Navigation Buttons to select between User Management and Station Management -->
     <div class="admin-nav">
+
 
         <button (click)="showUsersSection()">Quản lý Người Dùng</button>
         <button (click)="showStationsSection()">Quản lý Trạm</button>

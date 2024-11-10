@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService, User, Station } from '../user.service';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router'; // Import the Router
-
 @Component({
     selector: 'app-admin',
     templateUrl: './admin.component.html',
@@ -26,6 +26,7 @@ export class AdminComponent implements OnInit, OnDestroy {
         level: 1,  // Default level 1
         assignedStationId: null as string | null
     };
+
 
     // For handling the form to delete a user
     isDeleteUserFormVisible = false;
@@ -60,6 +61,7 @@ export class AdminComponent implements OnInit, OnDestroy {
         id: 0
     };
     constructor(private userService: UserService, private http: HttpClient, private router: Router) { }
+
 
     ngOnInit(): void {
         // Fetch all users and stations initially
@@ -373,6 +375,7 @@ export class AdminComponent implements OnInit, OnDestroy {
         Object.values(this.sockets).forEach(socket => socket.complete());
     }
 
+
     // Toggle between Users and Stations sections
     showUsersSection() {
         this.showUsers = true;
@@ -406,5 +409,6 @@ export class AdminComponent implements OnInit, OnDestroy {
             }
         });
         window.location.reload();
+
     }
 }
