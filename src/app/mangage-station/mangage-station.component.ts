@@ -115,11 +115,13 @@ export class MangageStationComponent {
     this.showEditStationForm = true; // Show the update form
   }
   //cập nhật thông tin trạm
+
   updateStation() {
     console.log(this.stationModel.id);
     const url = `http://localhost:8080/api/users/assign-sensor-station`;
     const payload = {
       stationId: this.stationModel.id,
+
       uri: this.stationModel.uri,
       port: this.stationModel.port
     };
