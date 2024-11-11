@@ -13,8 +13,6 @@ import { BehaviorSubject } from 'rxjs';
 export class MangageStationComponent {
   stationModel = {
     id:'',
-    name: '',
-    location: '',
     uri: '',
     port: 81,
   }
@@ -116,10 +114,10 @@ export class MangageStationComponent {
   }
   //cập nhật thông tin trạm
   updateStation(){
-    const url = `http://localhost:8080/api/stations/${this.stationModel.id}`;
+    console.log(this.stationModel.id);
+    const url = `http://localhost:8080/api/users/assign-sensor-station`;
     const payload = {
-      name: this.stationModel.name,
-      location: this.stationModel.location,
+      stationId: this.stationModel.id,
       uri: this.stationModel.uri,
       port: this.stationModel.port
     };
@@ -127,13 +125,14 @@ export class MangageStationComponent {
       next: (response) => {
         alert("Cập nhật trạm thành công");
         this.getStation(); // Refresh the station list
-        this.showEditStationForm = false; // Close the form after updating
+         // Close the form after updating
       },
       error: (error) => {
         console.error('Error updating station:', error);
         this.errorMessage = 'Could not update station.';
       }
     });
+    this.showEditStationForm = false;
   }
 
   submitDeleteStationForm(station:any) {
