@@ -116,9 +116,8 @@ export class MangageStationComponent {
   }
   //cập nhật thông tin trạm
   updateStation(){
-    const url = `http://localhost:8080/api/stations/${this.stationModel.id}`;
+    const url = 'http://localhost:8080/api/users/assign-sensor-station';
     const payload = {
-      name: this.stationModel.name,
       location: this.stationModel.location,
       uri: this.stationModel.uri,
       port: this.stationModel.port
