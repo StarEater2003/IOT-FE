@@ -4,10 +4,71 @@
             <h1>Quản lí các trạm</h1>
         </div>
         <div class="d-flex justify-content-center col col-md-12 menu-bar">
-            <div class="btn btn-success" >Thêm trạm</div>
+            <div class="btn btn-success" (click)="showAddStationForm = !showAddStationForm" >Thêm trạm</div>
         </div>
     </div>
-
+    <div *ngIf="showAddStationForm" class="mt-3 p-4 border rounded">
+        <h4>Thêm trạm</h4>
+        <form (ngSubmit)="addStation()" #stationForm="ngForm">
+          <div class="form-group">
+            <label for="name">Tên trạm</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              name="name"
+              [(ngModel)]="stationModel.name"
+              required
+            />
+          </div>
+      
+          <div class="form-group">
+            <label for="location">Vị trí</label>
+            <input
+              type="text"
+              class="form-control"
+              id="location"
+              name="location"
+              [(ngModel)]="stationModel.location"
+              required
+            />
+          </div>
+      
+          <div class="form-group">
+            <label for="uri">URI</label>
+            <input
+              type="text"
+              class="form-control"
+              id="uri"
+              name="uri"
+              [(ngModel)]="stationModel.uri"
+              required
+            />
+          </div>
+      
+          <div class="form-group">
+            <label for="port">Port</label>
+            <input
+              type="number"
+              class="form-control"
+              id="port"
+              name="port"
+              [(ngModel)]="stationModel.port"
+              required
+            />
+          </div>
+      
+          <button type="submit" class="btn btn-primary mt-3">Lưu</button>
+          <button
+            type="button"
+            class="btn btn-secondary mt-3 ml-2"
+            (click)="showAddStationForm = false"
+          >
+            Hủy
+          </button>
+        </form>
+      </div>
+      
     <div class="table-responsive-xl">
         <table class="table h-100 table-hover table-striped">
             <thead>
@@ -18,28 +79,41 @@
                     <th>
                         <span>Tên</span>
                     </th>
-                    <th>
-                        <span>Vị trí</span>
-                    </th>
+                    <th>Temperature</th>
+                    <th>Humidity</th>
+                    <th>Fan Speed</th>
+                    <th>LED State</th>
+                    <th>Buzzer State</th>
+                    <th>Target Temperature</th>
+                    <th>Target Humidity</th>
+                    <th>Medium Temperature</th>
+                    <th>Medium Humidity</th>
                     <th class="w-25">
                         <span>Action</span>
                     </th>
+                    
                 </tr>
             </thead>
             <tbody>
                 <tr
-                    *ngFor="let station of stationData | paginate: { itemsPerPage: 5, currentPage: page }; let i = index">
+                    *ngFor="let station of stationsData | paginate: { itemsPerPage: 5, currentPage: page }; let i = index">
                     <td>
                         <p>{{ (page - 1) * 5 + i + 1 }}</p>
                     </td>
                     <td>
                         {{ station.name }}
                     </td>
-                    <td>
-                        {{ station.location}}
-                    </td>
+                    <td>{{ sensorData[station.id]?.temperature }}</td>
+                    <td>{{ sensorData[station.id]?.humidity }}</td>
+                    <td>{{ sensorData[station.id]?.fanSpeed }}</td>
+                    <td>{{ sensorData[station.id]?.ledState }}</td>
+                    <td>{{ sensorData[station.id]?.buzzerState }}</td>
+                    <td>{{ sensorData[station.id]?.targetTemperature }}</td>
+                    <td>{{ sensorData[station.id]?.targetHumidity }}</td>
+                    <td>{{ sensorData[station.id]?.mediumTemperature }}</td>
+                    <td>{{ sensorData[station.id]?.mediumHumidity }}</td>
                     <td class="d-flex action-menu">
-                        <div class="btn btn-info mr-1" >Edit</div>
+                        <div class="btn btn-info mr-1" >Update</div>
                         <div class="btn btn-danger mr-1" >Delete</div>
                     </td>
                 </tr>

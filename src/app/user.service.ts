@@ -12,7 +12,7 @@ export interface User {
 export interface Station {
     id: number;
     name: string; // Add other properties if needed
-    localtion: string;
+    location: string;
     uri: string;
     port: number;
 }
