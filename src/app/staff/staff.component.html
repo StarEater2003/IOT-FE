@@ -79,5 +79,7 @@
         <button (click)="updateSensorData()">Gửi</button>
       </div>
     </div>
-  </div>
-  
+</div>
+    <div *ngIf="!sensorData" class="container-fluid">
+      <h1 class="large-text">Bạn chưa được phân quyền</h1> 
+    </div>
