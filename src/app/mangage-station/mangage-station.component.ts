@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class MangageStationComponent {
   stationModel = {
-    id:'',
+    id: '',
     uri: '',
     port: 81,
   }
@@ -24,7 +24,7 @@ export class MangageStationComponent {
   errorMessage: string | undefined;
 
   showAddStationForm = false;
-  showEditStationForm=false;
+  showEditStationForm = false;
 
   private stationLogs: { [stationId: string]: any[] } = {};
   private stationLogsSubject: { [stationId: string]: BehaviorSubject<any[]> } = {};
@@ -34,7 +34,7 @@ export class MangageStationComponent {
   maxHumidity: number = 0;
   constructor(
     private userService: UserService,
-    private http:HttpClient
+    private http: HttpClient
   ) { }
 
 
@@ -42,7 +42,7 @@ export class MangageStationComponent {
     this.getStation();
   }
   //lấy danh sách các trạm
-  getStation(){
+  getStation() {
     this.userService.getAllStations().subscribe({
       next: (stations) => {
         this.stationsData = stations; // Store stations if needed
@@ -53,12 +53,14 @@ export class MangageStationComponent {
         this.errorMessage = 'Could not retrieve station data.';
       }
     });
+    
   }
   //lấy data từ trạm
   connectToAllStations() {
     this.stationsData.forEach(station => {
       // Ensure assignedStationId is a valid number before using it
-      if (station.id !== null) {
+      if (station.id !== null && station.uri && /\d/.test(station.uri) && station.uri.length > 6
+      ) {
         const stationId = station.id;
         const stationUri = `ws://localhost:8080/ws/${stationId}`;
         const socket = webSocket(stationUri);
@@ -77,9 +79,9 @@ export class MangageStationComponent {
             if (this.stationLogs[stationId].length === 0 || this.stationLogs[stationId][this.stationLogs[stationId].length - 1] !== data) {
               this.stationLogs[stationId].push(data);
             }
-        
+
             // Update the BehaviorSubject with the latest log data
-            this.stationLogsSubject[stationId].next(this.stationLogs[stationId]); 
+            this.stationLogsSubject[stationId].next(this.stationLogs[stationId]);
           },
           error: (err) => console.error(`Error from station ${stationId}:`, err),
           complete: () => console.log(`Connection to station ${stationId} closed.`)
@@ -96,24 +98,24 @@ export class MangageStationComponent {
     const url = 'http://localhost:8080/api/stations';
     const payload = this.stationModel;
     this.http.post(url, payload).subscribe({
-        next: (response) => {
-            console.log('New station added successfully', response);
-            this.getStation();
-          
-        },
-        error: (error) => {
-            console.error('Error adding new station:', error);
-            this.errorMessage = 'Could not add station.';
-        }
+      next: (response) => {
+        console.log('New station added successfully', response);
+        this.getStationEdit();
+
+      },
+      error: (error) => {
+        console.error('Error adding new station:', error);
+        this.errorMessage = 'Could not add station.';
+      }
     });
-} 
+  }
   //mở form update Station
-  onUpdateStation(station:any){
+  onUpdateStation(station: any) {
     this.stationModel = { ...station }; // Copy the selected station data to stationModel
     this.showEditStationForm = true; // Show the update form
   }
   //cập nhật thông tin trạm
-  updateStation(){
+  updateStation() {
     console.log(this.stationModel.id);
     const url = `http://localhost:8080/api/users/assign-sensor-station`;
     const payload = {
@@ -124,8 +126,8 @@ export class MangageStationComponent {
     this.http.put(url, payload).subscribe({
       next: (response) => {
         alert("Cập nhật trạm thành công");
-        this.getStation(); // Refresh the station list
-         // Close the form after updating
+        this.getStationEdit(); // Refresh the station list
+        // Close the form after updating
       },
       error: (error) => {
         console.error('Error updating station:', error);
@@ -135,30 +137,43 @@ export class MangageStationComponent {
     this.showEditStationForm = false;
   }
 
-  submitDeleteStationForm(station:any) {
+  submitDeleteStationForm(station: any) {
     if (station.id != null) {
-        const url = `http://localhost:8080/api/stations/${station.id}`;
-        this.http.delete(url).subscribe({
-            next: (response) => {
-                alert('Xóa trạm thành công');
-                this.getStation();
-            },
-            error: (error) => {
-                console.error('Error deleting station:', error);
-                this.errorMessage = 'Could not delete station.';
-            }
-        });
+      const url = `http://localhost:8080/api/stations/${station.id}`;
+      this.http.delete(url).subscribe({
+        next: (response) => {
+          alert('Xóa trạm thành công');
+          this.getStationEdit();
+        },
+        error: (error) => {
+          console.error('Error deleting station:', error);
+          this.errorMessage = 'Could not delete station.';
+        }
+      });
     }
-}
-viewStationLogs(station:any): void {
-  // Lấy logs của station từ stationLogs và hiển thị trong currentLogs
-  this.currentStationId = station.id.toString();
-  this.currentLogs = this.stationLogs[this.currentStationId]?.slice(-15) || []; // Hiển thị 15 log gần nhất
-}
+  }
+  viewStationLogs(station: any): void {
+    // Lấy logs của station từ stationLogs và hiển thị trong currentLogs
+    this.currentStationId = station.id.toString();
+    this.currentLogs = this.stationLogs[this.currentStationId]?.slice(-15) || []; // Hiển thị 15 log gần nhất
+  }
   ngOnDestroy() {
     // Unsubscribe and close all WebSocket connections when the component is destroyed
     this.subscriptions.forEach(sub => sub.unsubscribe());
     Object.values(this.sockets).forEach(socket => socket.complete());
+  }
+  getStationEdit() {
+    this.userService.getAllStations().subscribe({
+      next: (stations) => {
+        this.stationsData = stations; // Store stations if needed
+        this.connectToAllStations();
+      },
+      error: (error) => {
+        console.error('Error fetching stations:', error);
+        this.errorMessage = 'Could not retrieve station data.';
+      }
+    });
+    window.location.reload();
   }
 
 }
