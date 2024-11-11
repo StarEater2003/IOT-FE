@@ -28,7 +28,7 @@ export class UserService {
 
     currentUser: User | null = null; // To store the currently logged-in user
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) { }
 
     // Method to log in a user
     login(user: Partial<Pick<User, 'username' | 'password'>>): Observable<any> {
@@ -37,8 +37,8 @@ export class UserService {
             username: user.username || '',
             password: user.password || ''
         };
-        console.log(loginPayload.username+" "+loginPayload.password);
-    
+        console.log(loginPayload.username + " " + loginPayload.password);
+
         return this.http.post<any>(this.apiUrlLogin, loginPayload).pipe(
             tap(response => {
                 // Giả sử response chứa thông tin người dùng bao gồm id, assignedStationId, và role (level)
@@ -59,9 +59,20 @@ export class UserService {
         return this.http.post<User>(this.apiUrl, user);
     }
 
+    updateUser(id: number, data: any): Observable<any> {
+        const url = `${this.apiUrl}/update/${id}`;
+        return this.http.post(url, data);
+    }
+
+    deleteUser(id: number): Observable<any> {
+        const url = `${this.apiUrl}/deleteUser/${id}`;
+        return this.http.get(url); // Assuming the API endpoint uses GET for deletion
+    }
+
+
     assignStationToUser(userId: number, stationId: number): Observable<void> {
         // Tạo URL cho endpoint PUT
-        const url = `${this.apiUrl}/${userId}/assign-user-station`;      
+        const url = `${this.apiUrl}/${userId}/assign-user-station`;
         return this.http.put<void>(url, stationId).pipe(
             tap(() => {
                 // Xử lý sau khi gán station cho user nếu cần

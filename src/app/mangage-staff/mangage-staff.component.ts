@@ -11,6 +11,9 @@ import { Router } from '@angular/router';
 })
 export class MangageStaffComponent {
   showAddUserForm = false;
+  showEditUserForm= false
+
+
   userModel:User = {
     username: '',
     password: '',
@@ -21,7 +24,7 @@ export class MangageStaffComponent {
   errorMessage: string | undefined;
   page:number=1;
   staffs:User[]=[];
-    
+  editingUserId: number | null = null;
   constructor(
     private userService: UserService,
     private router:Router,
@@ -34,7 +37,7 @@ export class MangageStaffComponent {
       next: (data: User[]) => {
           this.users = data.filter(user => user.level === 2); // Filter for users with level 2 (staff)
           this.staffs=this.users
-          console.log(this.users)
+          console.log(this.staffs)
         // Connect to all assigned stations
       },
       error: (error) => {
@@ -66,13 +69,50 @@ export class MangageStaffComponent {
     console.log(this.userModel)
   
   }
-  assignStation(staff:any) {
-    // const modalRef = this.modalService.open(AsignStationComponent);
-    // modalRef.componentInstance.user = staff;
-    // modalRef.result.then(result => {
-    //   if (result) {
-    //     this.getUser();
-    //   }
-    // });
+  onUpdateUser(staff:any) {
+    this.userModel = { ...staff }; // Copy the selected user data to the form
+    this.editingUserId = staff.id; // Set the ID of the user being edited
+    this.showEditUserForm = true;
   }
+  updateUser() {
+    if (this.editingUserId !== null) {
+      this.userService.updateUser(this.editingUserId, this.userModel).subscribe({
+        next: (response) => {
+          console.log('User updated successfully:', response);
+          this.getUser(); // Refresh the user list after update
+          this.showEditUserForm = false; // Hide the edit form
+          this.resetUserModel(); // Reset the form
+        },
+        error: (error) => {
+          console.error('Error updating user:', error);
+          this.errorMessage = 'Could not update user.';
+        },
+      });
+    }
+  }
+  submitDeleteUser(staff:any){
+    if (staff.id !== null) {
+      this.userService.deleteUser(staff.id).subscribe({
+        next: (response) => {
+          console.log('User deleted successfully', response);
+          this.getUser()// Refresh the user list after deletion
+          alert("Xóa user thành công!")
+        },
+        error: (error) => {
+          console.error('Error deleting user:', error);
+          this.errorMessage = 'Could not delete user.';
+        }
+      });
+    }
+  }
+  resetUserModel() {
+    this.userModel = {
+      username: '',
+      password: '',
+      level: 1,
+      assignedStationId: null,
+    };
+    this.editingUserId = null;
+  }
+
 }
