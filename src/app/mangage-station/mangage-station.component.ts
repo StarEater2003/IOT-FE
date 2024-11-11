@@ -118,7 +118,7 @@ export class MangageStationComponent {
   updateStation(){
     const url = 'http://localhost:8080/api/users/assign-sensor-station';
     const payload = {
-      location: this.stationModel.location,
+      location: this.stationModel.id,
       uri: this.stationModel.uri,
       port: this.stationModel.port
     };
