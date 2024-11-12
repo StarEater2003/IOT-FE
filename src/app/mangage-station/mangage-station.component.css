@@ -1,3 +1,6 @@
 .head-title{
     margin-bottom: 40px;
 }
+.add_button{
+    max-height: fit-content;
+}
