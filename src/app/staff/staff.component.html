@@ -1,83 +1,211 @@
-<div *ngIf="sensorData" class="container-fluid">
-    <h1 class="title">Cảm biến</h1>
-    <div class="row">
-      <div class="col col-md-9">
-        <h2 class="menu-title">Thông số hiện tại</h2>
-        <div class="row">
-          <div class="col-6">
-            <div class="d-flex justify-content-between">
-              <div class="data-label">
-                <div class="data-title">Nhiệt độ</div>
-                <div class="data">{{sensorData.temperature}} ℃</div>
-              </div>
-              <i class="bi bi-thermometer-half icon-medium"></i>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="d-flex justify-content-between data-humidity">
-              <div class="data-label">
-                <div class="data-title">Độ ẩm</div>
-                <div class="data">{{sensorData.humidity}} %</div>
-              </div>
-              <i class="bi bi-moisture icon-medium"></i>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <div class="d-flex justify-content-between data-humidity">
-              <div class="data-label">
-                <div class="data-title">Tốc độ quạt</div>
-                <div class="data">{{sensorData.fanSpeed}} rpm</div>
-              </div>
-              <i class="bi bi-fan icon-medium"></i>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="d-flex justify-content-between data-humidity">
-              <div class="data-label">
-                <div class="data-title">Đèn</div>
-                <div class="data">{{sensorData.ledState}}</div>
-              </div>
-              <i class="bi bi-lightbulb icon-medium"></i>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <div class="data-label">
-              <div class="data-title">Nhiệt độ trung bình</div>
-              <div class="data">{{sensorData.mediumTemperature}} ℃</div>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="data-label">
-              <div class="data-title">Độ ẩm trung bình</div>
-              <div class="data">{{sensorData.mediumHumidity}} %</div>
-            </div>
-          </div>
+<div *ngIf="sensorData" class="container-fluid py-4">
+  <div class="col-6 mb-3">
+    <div [ngClass]="{'border-danger': sensorData.temperature > (sensorData.mediumTemperature || 0)}"
+      class="d-flex justify-content-between align-items-center p-3 border rounded shadow-sm bg-light">
+      <div class="data-label">
+        <div class="data-title text-secondary">Nhiệt độ</div>
+        <div class="data h5" [ngClass]="{'text-danger': sensorData.temperature > (sensorData.mediumTemperature || 0)}">
+          {{ sensorData.temperature }} ℃
         </div>
       </div>
-      <div class="col col-md-3">
-        <h2 class="menu-title">Bảng điều khiển</h2>
-        <div class="target-temp">
-          <div>Nhập nhiệt độ mong muốn</div>
-          <input type="number" [(ngModel)]="targetTemperature" placeholder="Nhiệt độ mục tiêu">
-        </div>
-        <div class="target-humidity">
-          <div>Nhập độ ẩm mong muốn</div>
-          <input type="number" [(ngModel)]="targetHumidity" placeholder="Độ ẩm mục tiêu">
-        </div>
-        <div class="medium-temp">
-          <div>Nhập nhiệt độ trung bình mong muốn</div>
-          <input type="number" [(ngModel)]="mediumTemperature" placeholder="Nhiệt độ trung bình">
-        </div>
-        <div class="medium-humi">
-          <div>Nhập độ ẩm trung bình mong muốn</div>
-          <input type="number" [(ngModel)]="mediumHumidity" placeholder="Độ ẩm trung bình">
-        </div>
-        <button (click)="updateSensorData()">Gửi</button>
-      </div>
+      <i class="bi bi-thermometer-half icon-medium"
+        [ngClass]="{'text-danger': sensorData.temperature > (sensorData.mediumTemperature || 0)}"></i>
+    </div>
+    <div
+      *ngIf="sensorData.temperature > (sensorData.mediumTemperature || 0) && sensorData.temperature < (sensorData.targetTemperature ||0)"
+      class="alert alert-danger mt-2">
+      Cảnh báo: Nhiệt độ đã vượt mức 2!
+    </div>
+    <div *ngIf="sensorData.temperature > (sensorData.targetTemperature || 0)" class="alert alert-danger mt-2">
+      Cảnh báo: Nhiệt độ đã vượt mức 1!
     </div>
   </div>
-  
+
+  <!-- Humidity Display with Warning -->
+  <div class="col-6 mb-3">
+    <div [ngClass]="{'border-danger': sensorData.humidity > (sensorData.mediumHumidity || 0)}"
+      class="d-flex justify-content-between align-items-center p-3 border rounded shadow-sm bg-light">
+      <div class="data-label">
+        <div class="data-title text-secondary">Độ ẩm</div>
+        <div class="data h5" [ngClass]="{'text-danger': sensorData.humidity > (sensorData.mediumHumidity || 0)}">
+          {{ sensorData.humidity }} %
+        </div>
+      </div>
+      <i class="bi bi-moisture icon-medium"
+        [ngClass]="{'text-danger': sensorData.humidity > (sensorData.mediumHumidity || 0)}"></i>
+    </div>
+    <div
+      *ngIf="sensorData.humidity > (sensorData.mediumHumidity || 0)  && sensorData.humidity < (sensorData.targetHumidity ||0)"
+      class="alert alert-danger mt-2">
+      Cảnh báo: Độ ẩm đã vượt mức 2!
+    </div>
+    <div *ngIf="sensorData.humidity > (sensorData.targetHumidity || 0)" class="alert alert-danger mt-2">
+      Cảnh báo: Độ ẩm đã vượt mức 1!
+    </div>
+  </div>
+  <h1 class="title text-center text-primary mb-4">Cảm biến</h1>
+
+  <!-- Main Sensor Data Section -->
+  <div class="row">
+    <div class="col-md-9">
+      <h2 class="menu-title text-secondary mb-3">Thông số hiện tại</h2>
+      <div class="row mb-3">
+        <!-- Temperature Display -->
+        <div class="col-6 mb-3">
+          <div class="d-flex justify-content-between align-items-center p-3 border rounded shadow-sm bg-light">
+            <div class="data-label">
+              <div class="data-title text-secondary">Nhiệt độ</div>
+              <div class="data h5 text-primary">{{sensorData.temperature}} ℃</div>
+            </div>
+            <i class="bi bi-thermometer-half icon-medium text-primary"></i>
+          </div>
+        </div>
+
+        <!-- Humidity Display -->
+        <div class="col-6 mb-3">
+          <div class="d-flex justify-content-between align-items-center p-3 border rounded shadow-sm bg-light">
+            <div class="data-label">
+              <div class="data-title text-secondary">Độ ẩm</div>
+              <div class="data h5 text-primary">{{sensorData.humidity}} %</div>
+            </div>
+            <i class="bi bi-moisture icon-medium text-primary"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <!-- Fan Speed Display -->
+        <div class="col-6 mb-3">
+          <div class="d-flex justify-content-between align-items-center p-3 border rounded shadow-sm bg-light">
+            <div class="data-label">
+              <div class="data-title text-secondary">Tốc độ quạt</div>
+              <div class="data h5 text-primary">{{sensorData.fanSpeed}} rpm</div>
+            </div>
+            <i class="bi bi-fan icon-medium text-primary"></i>
+          </div>
+        </div>
+
+        <!-- LED State Display -->
+        <div class="col-6 mb-3">
+          <div class="d-flex justify-content-between align-items-center p-3 border rounded shadow-sm bg-light">
+            <div class="data-label">
+              <div class="data-title text-secondary">Đèn</div>
+              <div class="data h5 text-primary">{{sensorData.ledState}}</div>
+            </div>
+            <i class="bi bi-lightbulb icon-medium text-primary"></i>
+          </div>
+        </div>
+      </div>
+      <!-- LED State Display -->
+      <div class="col-6 mb-3">
+        <div class="d-flex justify-content-between align-items-center p-3 border rounded shadow-sm bg-light">
+          <div class="data-label">
+            <div class="data-title text-secondary">Còi báo động</div>
+            <div class="data h5 text-primary">{{sensorData.buzzerState}}</div>
+          </div>
+          <i class="bi bi-lightbulb icon-medium text-primary"></i>
+        </div>
+      </div>
+
+
+      <!-- Medium and Target Levels Section -->
+      <div class="row mb-3">
+        <div class="col-6 mb-3">
+          <div class="data-label p-3 border rounded shadow-sm" style="background-color: #FFE5B4;">
+            <div class="data-title text-secondary">Nhiệt độ mức 2</div>
+            <div class="data h5 text-warning">{{sensorData.mediumTemperature}} ℃</div>
+          </div>
+        </div>
+        <div class="col-6 mb-3">
+          <div class="data-label p-3 border rounded shadow-sm" style="background-color: #FFE5B4;">
+            <div class="data-title text-secondary">Độ ẩm mức 2</div>
+            <div class="data h5 text-warning">{{sensorData.mediumHumidity}} %</div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-6 mb-3">
+          <div class="data-label p-3 border rounded shadow-sm" style="background-color: #FFC1C1;">
+            <div class="data-title text-secondary">Nhiệt độ mức 1</div>
+            <div class="data h5 text-danger">{{sensorData.targetTemperature}} ℃</div>
+          </div>
+        </div>
+        <div class="col-6 mb-3">
+          <div class="data-label p-3 border rounded shadow-sm" style="background-color: #FFC1C1;">
+            <div class="data-title text-secondary">Độ ẩm mức 1</div>
+            <div class="data h5 text-danger">{{sensorData.targetHumidity}} %</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Control Panel Section -->
+    <div class="col-md-3">
+      <h2 class="menu-title text-secondary mb-3">Bảng điều khiển</h2>
+
+      <!-- Input Fields for Target and Medium Levels -->
+      <div class="form-group mb-3">
+        <label>Nhập nhiệt độ mức 1 mong muốn</label>
+        <input type="number" #targetTempInput class="form-control" [value]="targetTemperature">
+      </div>
+
+      <div class="form-group mb-3">
+        <label>Nhập độ ẩm mức 1 mong muốn</label>
+        <input type="number" #targetHumidityInput class="form-control" [value]="targetHumidity">
+      </div>
+
+      <div class="form-group mb-3">
+        <label>Nhập nhiệt độ mức 2 mong muốn</label>
+        <input type="number" #mediumTempInput class="form-control" [value]="mediumTemperature">
+      </div>
+
+      <div class="form-group mb-3">
+        <label>Nhập độ ẩm mức 2 mong muốn</label>
+        <input type="number" #mediumHumiInput class="form-control" [value]="mediumHumidity">
+      </div>
+
+      <!-- Fan Speed Control -->
+      <div class="form-group mb-3">
+        <label>Điều chỉnh tốc độ quạt</label>
+        <input type="number" #fanSpeedInput class="form-control" [value]="sensorData?.fanSpeed">
+      </div>
+
+      <div class="form-group mb-3">
+        <label>Điều khiển đèn</label>
+        <div>
+          <label>
+            <input type="radio" name="ledState" [checked]="selectedLEDState === 'on'" (click)="toggleLED('on')"> Bật
+          </label>
+          <label>
+            <input type="radio" name="ledState" [checked]="selectedLEDState === 'off'" (click)="toggleLED('off')"> Tắt
+          </label>
+        </div>
+        
+      </div>
+
+      <!-- Buzzer State Control (ON/OFF options) -->
+      <div class="form-group mb-3">
+        <label>Điều khiển còi báo động</label>
+        <div>
+          <label>
+            <input type="radio" name="buzzerState" [checked]="selectedBuzzerState === 'on'"
+              (click)="toggleBuzzer('on')"> Bật
+          </label>
+          <label>
+            <input type="radio" name="buzzerState" [checked]="selectedBuzzerState === 'off'"
+              (click)="toggleBuzzer('off')"> Tắt
+          </label>
+
+        </div>
+        <button type="button" (click)="setDefault()" class="btn btn-secondary">Không thay đổi (theo mặc
+          định)</button>
+        <!-- Submit Button -->
+        <button (click)="btnUpdateSensorData()" class="btn btn-primary w-100 mt-3">Gửi</button>
+      </div>
+    </div>
+
+
+  </div>
+  <div *ngIf="!sensorData" class="container-fluid py-4">
+    <h1> Bạn chưa được phân quyền</h1>
+  </div>

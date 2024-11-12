@@ -5,6 +5,7 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-mangage-station',
   templateUrl: './mangage-station.component.html',
@@ -13,6 +14,8 @@ import { BehaviorSubject } from 'rxjs';
 export class MangageStationComponent {
   stationModel = {
     id: '',
+    name: '',
+    location:'',
     uri: '',
     port: 81,
   }
@@ -34,7 +37,8 @@ export class MangageStationComponent {
   maxHumidity: number = 0;
   constructor(
     private userService: UserService,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) { }
 
 
@@ -137,6 +141,7 @@ export class MangageStationComponent {
       }
     });
     this.showEditStationForm = false;
+    window.location.reload();
   }
 
   submitDeleteStationForm(station: any) {
@@ -163,6 +168,11 @@ export class MangageStationComponent {
     // Unsubscribe and close all WebSocket connections when the component is destroyed
     this.subscriptions.forEach(sub => sub.unsubscribe());
     Object.values(this.sockets).forEach(socket => socket.complete());
+  }
+  manageStation(station: any) {
+    const stationId = station.id;
+    console.log(stationId);
+    this.router.navigate(['/staff'], { queryParams:  {stationId}});
   }
   getStationEdit() {
     this.userService.getAllStations().subscribe({
